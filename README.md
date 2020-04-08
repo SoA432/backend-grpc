@@ -9,9 +9,9 @@
 2) Run client with command `npm run start:client` - You may run multiple clients
 
 ## How to test?
-1) Run test with command `npm run test`, server will log all actions 
+1) Run test with command `npm run test`
 ## Server
-gRCP server listening at `http://127.0.0.1:50051`
+gRCP server listening at `http://127.0.0.1:50051`, server will log all actions 
 
 ## Client
 Each running client will do next job
