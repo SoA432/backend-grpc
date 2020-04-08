@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package graph;
+
+service GraphService {
+
+    rpc AddPersonNode (AddPersonNodeRequest) returns (AddPersonNodeResponse) {}
+    rpc AddGameNode (AddGameNodeRequest) returns (AddGameNodeResponse);
+    rpc AddEdge (AddEdgeRequest) returns (AddEdgeResponse);
+    rpc RemoveEdge (RemoveEdgeRequest) returns (RemoveEdgeResponse);
+    rpc PrintNodes (PrintNodesRequest) returns (stream PrintNodesResponse);
+}
+
+message Person {
+    string first_name = 1;
+    string last_name = 2;
+}
+
+message Game {
+    string title = 1;
+    string description = 2;
+}
+
+message Edge {
+    string person_full_name = 1;
+    string game_title = 2;
+}
+
+message AddPersonNodeRequest {
+    Person person = 1;
+}
+
+message AddPersonNodeResponse {
+    string result = 1;
+}
+
+message AddGameNodeRequest {
+    Game game = 1;
+}
+
+message AddGameNodeResponse {
+    string result = 1;
+}
+
+message AddEdgeRequest {
+    Edge edge_info = 1;
+}
+
+message AddEdgeResponse {
+    bool is_succeed = 1;
+}
+
+message RemoveEdgeRequest {
+    Edge edge_info = 1;
+}
+
+message RemoveEdgeResponse {
+    bool is_succeed = 1;
+}
+
+message PrintNodesRequest {}
+
+message PrintNodesResponse {
+    repeated string edge_info = 1;
+}

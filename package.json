@@ -1,0 +1,35 @@
+{
+  "name": "backend_task",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:server": "nodemon --exec ts-node src/server/index.ts",
+    "start:client": "nodemon --exec ts-node src/client/client.ts",
+    "build:proto": "npx grpc_tools_node_protoc --proto_path=. ./protos/graph.proto --js_out=import_style=commonjs,binary:./src --grpc_out=./src",
+    "build:proto-types": "npx grpc_tools_node_protoc --proto_path=. ./protos/graph.proto --ts_out=./src",
+    "test": "jasmine-ts --reporter=jasmine-console-reporter-ts --config=jasmine.json"
+  },
+  "author": "Yevhen Haievyi",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/debug": "^4.1.5",
+    "@types/google-protobuf": "^3.7.2",
+    "@types/jasmine": "^3.5.10",
+    "@types/node": "^13.11.0",
+    "debug": "^4.1.1",
+    "grpc_tools_node_protoc_ts": "^2.5.11",
+    "jasmine": "^3.5.0",
+    "jasmine-ts": "^0.3.0",
+    "jasmine-ts-console-reporter": "^3.1.1",
+    "nodemon": "^2.0.2",
+    "nyc": "^15.0.1",
+    "ts-node": "^8.8.2",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@grpc/proto-loader": "^0.5.4",
+    "google-protobuf": "^3.11.4",
+    "grpc": "^1.24.2"
+  }
+}
