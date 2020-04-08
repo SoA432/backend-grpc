@@ -1,6 +1,6 @@
 import { PersonInterface } from '../interfaces/person.interface';
 import grpc from 'grpc';
-import { AddEdgeRequest, AddEdgeResponse, AddGameNodeRequest, AddGameNodeResponse, AddPersonNodeRequest, AddPersonNodeResponse, Edge, Game, Person, PrintNodesRequest, RemoveEdgeRequest, RemoveEdgeResponse } from '../protos/graph_pb';
+import { EdgeInfo, UpdateUsersRequest, PrintNodesResponse, AddEdgeRequest, AddEdgeResponse, AddGameNodeRequest, AddGameNodeResponse, AddPersonNodeRequest, AddPersonNodeResponse, Edge, Game, Person, PrintNodesRequest, RemoveEdgeRequest, RemoveEdgeResponse } from '../protos/graph_pb';
 import { GraphServiceClient } from '../protos/graph_grpc_pb';
 import { GameInterface } from '../interfaces/game.interface';
 import { getRandomInt } from '../utils/random-number-generator'
@@ -31,7 +31,6 @@ const client = new GraphServiceClient(
 
 const callAddPersonNode = async (index: number) => {
     return new Promise((resolve, reject) => {
-        debug.log('>>> callAddPersonNode');
         const request = new AddPersonNodeRequest();
         const person = new Person();
 
@@ -54,7 +53,6 @@ const callAddPersonNode = async (index: number) => {
 
 const callAddGameNode = async (index: number) => {
     return new Promise((resolve, reject) => {
-        debug.log('>>> callAddGameNode');
         const request = new AddGameNodeRequest();
         const game = new Game();
         const randomGame = games[index];
@@ -76,7 +74,6 @@ const callAddGameNode = async (index: number) => {
 
 const callAddEdge = async (personIndex: number, gameIndex: number) => {
     return new Promise((resolve, reject) => {
-        debug.log('>>> callAddEdge');
         const request = new AddEdgeRequest();
         const edge = new Edge();
         edge.setGameTitle(games[gameIndex].title);
@@ -97,7 +94,6 @@ const callAddEdge = async (personIndex: number, gameIndex: number) => {
 
 const callRemoveEdge = async (personIndex: number, gameIndex: number) => {
     return new Promise((resolve, reject) => {
-        debug.log('>>> callRemoveEdge');
         const request = new RemoveEdgeRequest();
         const edge = new Edge();
         edge.setGameTitle(games[gameIndex].title);
@@ -117,12 +113,26 @@ const callRemoveEdge = async (personIndex: number, gameIndex: number) => {
 };
 
 const callPrintNodes = () => {
-    debug.log('>>> callPrintNodes');
-    const request = new PrintNodesRequest();
-    const stream: grpc.ClientReadableStream<Edge> = client.printNodes(request);
+    return new Promise((resolve, reject) => {
+        const request = new PrintNodesRequest();
+        client.printNodes(request, (error, response: PrintNodesResponse) => {
+            if (!error) {
+                debug.log('PrintNodes response:', response.getEdgeList());
+                resolve();
+            } else {
+                debug.log('error >>>>', error);
+                reject(error);
+                return;
+            }
+        })
+    })
+};
 
-    stream.on('data', (data: Edge) => {
-        debug.log(data.toObject());
+const callUpdateUsers = () => {
+    const request = new UpdateUsersRequest();
+    const stream: grpc.ClientReadableStream<EdgeInfo> = client.updateUsers(request);
+    stream.on('data', (data: EdgeInfo) => {
+       debug.log('New update >>> ', data.toObject());
     });
     stream.on('status', (status) => {
         debug.log('status', status);
@@ -135,14 +145,17 @@ const callPrintNodes = () => {
 async function main() {
     const randomPersonIndex = getRandomInt(0, 4);
     const randomGameIndex = getRandomInt(0, 2);
-    await callAddPersonNode(randomPersonIndex);
-    await callAddGameNode(randomGameIndex);
-    await callAddGameNode(randomGameIndex + 1);
-    await callAddGameNode(randomGameIndex + 2);
-    await callAddEdge(randomPersonIndex, randomGameIndex);
-    await callAddEdge(randomPersonIndex, randomGameIndex + 1);
-    await callAddEdge(randomPersonIndex, randomGameIndex + 2);
-    callPrintNodes();
+    await callPrintNodes();
+    await callUpdateUsers();
+    setTimeout(async () => {
+        await callAddPersonNode(randomPersonIndex);
+        await callAddGameNode(randomGameIndex);
+        await callAddGameNode(randomGameIndex + 1);
+        await callAddGameNode(randomGameIndex + 2);
+        await callAddEdge(randomPersonIndex, randomGameIndex);
+        await callAddEdge(randomPersonIndex, randomGameIndex + 1);
+        await callAddEdge(randomPersonIndex, randomGameIndex + 2);
+    }, 3000)
 
     // remove existing edge after 10 seconds
     setTimeout(async () => {

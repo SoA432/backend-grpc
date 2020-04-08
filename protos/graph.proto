@@ -8,7 +8,8 @@ service GraphService {
     rpc AddGameNode (AddGameNodeRequest) returns (AddGameNodeResponse);
     rpc AddEdge (AddEdgeRequest) returns (AddEdgeResponse);
     rpc RemoveEdge (RemoveEdgeRequest) returns (RemoveEdgeResponse);
-    rpc PrintNodes (PrintNodesRequest) returns (stream PrintNodesResponse);
+    rpc PrintNodes (PrintNodesRequest) returns (PrintNodesResponse);
+    rpc UpdateUsers (UpdateUsersRequest) returns (stream UpdateUsersResponse);
 }
 
 message Person {
@@ -61,5 +62,16 @@ message RemoveEdgeResponse {
 message PrintNodesRequest {}
 
 message PrintNodesResponse {
-    repeated string edge_info = 1;
+    repeated string edge = 1;
+}
+
+message EdgeInfo {
+    string edge = 1;
+    bool is_removed = 2;
+}
+
+message UpdateUsersRequest {}
+
+message UpdateUsersResponse {
+    EdgeInfo edge_info = 1;
 }

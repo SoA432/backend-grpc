@@ -15,9 +15,11 @@ gRCP server listening at `http://127.0.0.1:50051`, server will log all actions
 
 ## Client
 Each running client will do next job
-1) Create Person Node
-2) Create 3 Game Node
-3) Add 3 Edges for Person Node - Game Node relation 
-4) Then Client will listen for Edges updates for 60 seconds by default
-5) After 10 seconds Client will remove one edge
-6) All connected clients will see the updated graph
+1) Get current edges
+2) Subscribe for edges updates
+3) Create Person Node
+4) Create 3 Game Node
+5) Add 3 Edges for Person Node - Game Node relation 
+6) After 10 seconds Client will remove one edge
+
+All connected clients will see if any edge updates were made

@@ -114,6 +114,28 @@ function deserialize_graph_RemoveEdgeResponse(buffer_arg) {
   return protos_graph_pb.RemoveEdgeResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_graph_UpdateUsersRequest(arg) {
+  if (!(arg instanceof protos_graph_pb.UpdateUsersRequest)) {
+    throw new Error('Expected argument of type graph.UpdateUsersRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_graph_UpdateUsersRequest(buffer_arg) {
+  return protos_graph_pb.UpdateUsersRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_graph_UpdateUsersResponse(arg) {
+  if (!(arg instanceof protos_graph_pb.UpdateUsersResponse)) {
+    throw new Error('Expected argument of type graph.UpdateUsersResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_graph_UpdateUsersResponse(buffer_arg) {
+  return protos_graph_pb.UpdateUsersResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 
 var GraphServiceService = exports.GraphServiceService = {
   addPersonNode: {
@@ -163,13 +185,24 @@ var GraphServiceService = exports.GraphServiceService = {
   printNodes: {
     path: '/graph.GraphService/PrintNodes',
     requestStream: false,
-    responseStream: true,
+    responseStream: false,
     requestType: protos_graph_pb.PrintNodesRequest,
     responseType: protos_graph_pb.PrintNodesResponse,
     requestSerialize: serialize_graph_PrintNodesRequest,
     requestDeserialize: deserialize_graph_PrintNodesRequest,
     responseSerialize: serialize_graph_PrintNodesResponse,
     responseDeserialize: deserialize_graph_PrintNodesResponse,
+  },
+  updateUsers: {
+    path: '/graph.GraphService/UpdateUsers',
+    requestStream: false,
+    responseStream: true,
+    requestType: protos_graph_pb.UpdateUsersRequest,
+    responseType: protos_graph_pb.UpdateUsersResponse,
+    requestSerialize: serialize_graph_UpdateUsersRequest,
+    requestDeserialize: deserialize_graph_UpdateUsersRequest,
+    responseSerialize: serialize_graph_UpdateUsersResponse,
+    responseDeserialize: deserialize_graph_UpdateUsersResponse,
   },
 };
 

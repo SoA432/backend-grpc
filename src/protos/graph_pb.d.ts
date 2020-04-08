@@ -279,10 +279,10 @@ export namespace PrintNodesRequest {
 }
 
 export class PrintNodesResponse extends jspb.Message { 
-    clearEdgeInfoList(): void;
-    getEdgeInfoList(): Array<string>;
-    setEdgeInfoList(value: Array<string>): void;
-    addEdgeInfo(value: string, index?: number): string;
+    clearEdgeList(): void;
+    getEdgeList(): Array<string>;
+    setEdgeList(value: Array<string>): void;
+    addEdge(value: string, index?: number): string;
 
 
     serializeBinary(): Uint8Array;
@@ -297,6 +297,72 @@ export class PrintNodesResponse extends jspb.Message {
 
 export namespace PrintNodesResponse {
     export type AsObject = {
-        edgeInfoList: Array<string>,
+        edgeList: Array<string>,
+    }
+}
+
+export class EdgeInfo extends jspb.Message { 
+    getEdge(): string;
+    setEdge(value: string): void;
+
+    getIsRemoved(): boolean;
+    setIsRemoved(value: boolean): void;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): EdgeInfo.AsObject;
+    static toObject(includeInstance: boolean, msg: EdgeInfo): EdgeInfo.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: EdgeInfo, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): EdgeInfo;
+    static deserializeBinaryFromReader(message: EdgeInfo, reader: jspb.BinaryReader): EdgeInfo;
+}
+
+export namespace EdgeInfo {
+    export type AsObject = {
+        edge: string,
+        isRemoved: boolean,
+    }
+}
+
+export class UpdateUsersRequest extends jspb.Message { 
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): UpdateUsersRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: UpdateUsersRequest): UpdateUsersRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: UpdateUsersRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): UpdateUsersRequest;
+    static deserializeBinaryFromReader(message: UpdateUsersRequest, reader: jspb.BinaryReader): UpdateUsersRequest;
+}
+
+export namespace UpdateUsersRequest {
+    export type AsObject = {
+    }
+}
+
+export class UpdateUsersResponse extends jspb.Message { 
+
+    hasEdgeInfo(): boolean;
+    clearEdgeInfo(): void;
+    getEdgeInfo(): EdgeInfo | undefined;
+    setEdgeInfo(value?: EdgeInfo): void;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): UpdateUsersResponse.AsObject;
+    static toObject(includeInstance: boolean, msg: UpdateUsersResponse): UpdateUsersResponse.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: UpdateUsersResponse, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): UpdateUsersResponse;
+    static deserializeBinaryFromReader(message: UpdateUsersResponse, reader: jspb.BinaryReader): UpdateUsersResponse;
+}
+
+export namespace UpdateUsersResponse {
+    export type AsObject = {
+        edgeInfo?: EdgeInfo.AsObject,
     }
 }
