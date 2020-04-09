@@ -1,14 +1,14 @@
 import { GameNode } from './game-node';
-import { GameInterface } from '../interfaces/game.interface';
+import { Game } from '../protos/graph_pb';
 
 describe('Game node creation', () => {
-    const oriGame: GameInterface = {
-        title: 'Ori',
-        description: 'Beautiful Game!'
-    };
+    const mockGame = new Game();
+    mockGame.setId('1');
+    mockGame.setTitle('Ori');
+    mockGame.setDescription('Beautiful Game!');
 
     it('should create game instance', () => {
-        const game = new GameNode(oriGame);
+        const game = new GameNode(mockGame);
         expect(game).toBeDefined()
     });
 });

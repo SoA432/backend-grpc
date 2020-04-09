@@ -1,27 +1,23 @@
-import { Edge } from './../protos/graph_pb';
-import { GameInterface } from '../interfaces/game.interface';
+import { Edge, Game, Person } from './../protos/graph_pb';
 import { Graph } from './graph';
-import { PersonInterface } from '../interfaces/person.interface';
 import { PersonNode } from './person-node';
 import { GameNode } from './game-node';
 
 describe('Graph', () => {
     let graph: Graph;
-    const mockGame: GameInterface = {
-        id: '222',
-        title: 'Ori',
-        description: 'Beautiful Game!'
-    };
+    const mockGame = new Game();
+    mockGame.setId('1');
+    mockGame.setTitle('Ori');
+    mockGame.setDescription('Beautiful Game!');
 
-    const mockPerson: PersonInterface = {
-        id: '111',
-        firstName: 'Andrii',
-        lastName: 'Holodov'
-    };
+    const mockPerson = new Person();
+    mockPerson.setId('1');
+    mockPerson.setFirstName('Andrii');
+    mockPerson.setLastName('Holodov');
 
     const mockEdge = new Edge();
-    mockEdge.setGameId(mockGame.id);
-    mockEdge.setPersonId(mockPerson.id);
+    mockEdge.setGameId(mockGame.getId());
+    mockEdge.setPersonId(mockPerson.getId());
 
     beforeEach(() => {
         graph = new Graph();
@@ -56,14 +52,14 @@ describe('Graph', () => {
         const mockPersonNode: PersonNode = new PersonNode(mockPerson);
         graph.addPersonNode(mockPerson);
 
-        expect(graph.getPerson(mockPerson.id)).toEqual(mockPersonNode)
+        expect(graph.getPerson(mockPerson.getId())).toEqual(mockPersonNode)
     });
 
     it('should return game node if exist', () => {
         const mockGameNode: GameNode = new GameNode(mockGame);
-        graph.addGameNode(mockGameNode);
+        graph.addGameNode(mockGame);
 
-        expect(graph.getGame(mockGame.id)).toEqual(mockGameNode)
+        expect(graph.getGame(mockGame.getId())).toEqual(mockGameNode)
     });
 
     it('should remove edge if edge exist, return true if success', () => {

@@ -1,8 +1,6 @@
-import { Edge } from './../protos/graph_pb';
+import { Edge, Person, Game } from './../protos/graph_pb';
 import { PersonNode } from './person-node';
 import { GameNode } from './game-node';
-import { GameInterface } from '../interfaces/game.interface';
-import { PersonInterface } from '../interfaces/person.interface';
 
 export class Graph {
     peopleNodes: Map<string, PersonNode>;
@@ -14,13 +12,13 @@ export class Graph {
         this.edges = new Map();
     }
 
-    public addPersonNode(person: PersonInterface): PersonInterface {
-        this.peopleNodes.set(person.id, new PersonNode(person))
+    public addPersonNode(person: Person): Person {
+        this.peopleNodes.set(person.getId(), new PersonNode(person))
         return person;
     }
 
-    public addGameNode(game: GameInterface): GameInterface {
-        this.gameNodes.set(game.id, new GameNode(game))
+    public addGameNode(game: Game): Game {
+        this.gameNodes.set(game.getId(), new GameNode(game))
         return game;
     }
 

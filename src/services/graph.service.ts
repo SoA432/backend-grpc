@@ -1,7 +1,13 @@
-import { GameInterface } from './../interfaces/game.interface';
-import { PersonInterface } from './../interfaces/person.interface';
 import { Graph } from './../graph/graph';
-import { AddPersonNodeRequest, AddGameNodeRequest, AddEdgeRequest, RemoveEdgeRequest, Edge } from '../protos/graph_pb';
+import {
+    AddPersonNodeRequest,
+    AddGameNodeRequest,
+    AddEdgeRequest,
+    RemoveEdgeRequest,
+    Edge,
+    Person,
+    Game
+} from '../protos/graph_pb';
 import { v4 as uuidv4 } from 'uuid';
 
 export class GraphService {
@@ -11,25 +17,15 @@ export class GraphService {
         this.graph = new Graph();
     }
 
-    public addPersonNode(request: AddPersonNodeRequest): PersonInterface {
-        const firstName = request.getPerson().getFirstName();
-        const lastName = request.getPerson().getLastName();
-        const person: PersonInterface = {
-            id: uuidv4(),
-            firstName,
-            lastName
-        };
+    public addPersonNode(request: AddPersonNodeRequest): Person {
+        const person = request.getPerson();
+        person.setId(uuidv4());
         return this.graph.addPersonNode(person);
     }
 
-    public addGameNode(request: AddGameNodeRequest): GameInterface {
-        const title = request.getGame().getTitle();
-        const description = request.getGame().getDescription();
-        const game: GameInterface = {
-            id: uuidv4(),
-            title,
-            description
-        };
+    public addGameNode(request: AddGameNodeRequest): Game {
+        const game = request.getGame();
+        game.setId(uuidv4());
         return this.graph.addGameNode(game);
     }
 

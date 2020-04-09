@@ -18,9 +18,9 @@ import {
     GetEdgesRequest,
     GetEdgesResponse
 } from '../protos/graph_pb';
-import { GameInterface } from '../interfaces/game.interface';
-import { PersonInterface } from '../interfaces/person.interface';
 import { getRandomInt } from '../utils/random-number-generator'
+import { GameInterface } from './../interfaces/game.interface';
+import { PersonInterface } from './../interfaces/person.interface';
 
 debug('client');
 
@@ -150,7 +150,9 @@ const callUpdateUsers = () => {
     const request = new UpdateUsersRequest();
     const stream: grpc.ClientReadableStream<EdgeInfo> = client.updateUsers(request);
     stream.on('data', (data: EdgeInfo) => {
-       debug.log('New update >>> ', data.toObject());
+        debug.log('=========================================');
+        debug.log('New update! Diff: ', data.toObject());
+        debug.log('=========================================');
     });
     stream.on('status', (status) => {
         debug.log('status', status);

@@ -1,13 +1,13 @@
-import { GameInterface } from '../interfaces/game.interface';
+import { Game } from "../protos/graph_pb";
 
 export class GameNode {
     public id: string;
     public title: string;
     public description: string;
 
-    constructor(game: GameInterface) {
-        this.id = game.id
-        this.title = game.title;
-        this.description = game.description;
+    constructor(game: Game) {
+        this.id = game.getId();
+        this.title = game.getTitle();
+        this.description = game.getDescription();
     }
 }

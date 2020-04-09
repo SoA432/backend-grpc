@@ -28,16 +28,16 @@ export class Server implements IGraphServiceServer {
     public addPersonNode(call: grpc.ServerUnaryCall<AddPersonNodeRequest>, callback: grpc.sendUnaryData<AddPersonNodeResponse>) {
         const person = this.graphService.addPersonNode(call.request);
         const response = new AddPersonNodeResponse();
-        debug.log('New Person Node added: ', person);
-        response.setPersonId(person.id);
+        debug.log('New Person Node added: ', person.toObject());
+        response.setPersonId(person.getId());
         callback(null, response);
     }
 
     public addGameNode(call: grpc.ServerUnaryCall<AddGameNodeRequest>, callback: grpc.sendUnaryData<AddGameNodeResponse>) {
         const game = this.graphService.addGameNode(call.request)
         const response = new AddGameNodeResponse();
-        debug.log('New Game Node added: ', game);
-        response.setGameId(game.id);
+        debug.log('New Game Node added: ', game.toObject());
+        response.setGameId(game.getId());
         callback(null, response);
     }
 
@@ -45,7 +45,7 @@ export class Server implements IGraphServiceServer {
         const result = this.graphService.addEdge(call.request);
         const response = new AddEdgeResponse();
         const debugMessage = result.isSuccess ? 'New Edge added: ' : 'Unable to add edge :'
-        debug.log(debugMessage, result.edgeResponse);
+        debug.log(debugMessage, result.edgeResponse.toObject());
         response.setEdge(result.edgeResponse)
         this.connectionService.updateConnectedUsers(result.edgeResponse, !result.isSuccess);
         callback(null, response);
@@ -55,7 +55,7 @@ export class Server implements IGraphServiceServer {
         const result = this.graphService.removeEdge(call.request);
         const response = new RemoveEdgeResponse();
         const debugMessage = result.isSuccess ? 'Edge removed: ' : 'Unable to remove edge :'
-        debug.log(debugMessage, result.edge);
+        debug.log(debugMessage, result.edge.toObject());
         response.setIsSucceed(result.isSuccess);
         this.connectionService.updateConnectedUsers(result.edge, result.isSuccess);
         callback(null, response);
