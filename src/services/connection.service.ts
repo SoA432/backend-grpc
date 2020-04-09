@@ -1,6 +1,5 @@
-import { EdgeInterface } from '../interfaces/edge.interface';
 import grpc from "grpc";
-import { UpdateUsersRequest, UpdateUsersResponse, EdgeInfo } from '../protos/graph_pb';
+import { UpdateUsersRequest, UpdateUsersResponse, EdgeInfo, Edge} from '../protos/graph_pb';
 
 export class ConnectionService {
 
@@ -16,12 +15,12 @@ export class ConnectionService {
         return this.connectedUsersCalls;
     }
 
-    public updateConnectedUsers(edge: EdgeInterface, isRemoved: boolean): void {
+    public updateConnectedUsers(edge: Edge, isRemoved: boolean): void {
         this.getConnectedUser().forEach((call: grpc.ServerWriteableStream<UpdateUsersRequest>) => {
             const reply = new UpdateUsersResponse();
             let edgeInfo: EdgeInfo = new EdgeInfo();
 
-            edgeInfo.setEdge(`${edge.fullName} - ${edge.title}`);
+            edgeInfo.setEdge(edge);
             edgeInfo.setIsRemoved(isRemoved);
 
             reply.setEdgeInfo(edgeInfo);

@@ -1,80 +1,69 @@
-import { IGraphServiceServer } from '../protos/graph_grpc_pb';
-import { Graph } from '../graph/graph';
 import grpc from "grpc";
-import { AddEdgeRequest, AddEdgeResponse, AddGameNodeRequest, AddGameNodeResponse, AddPersonNodeRequest, AddPersonNodeResponse, PrintNodesRequest, PrintNodesResponse, RemoveEdgeRequest, RemoveEdgeResponse, UpdateUsersRequest } from '../protos/graph_pb';
-import { PersonInterface } from '../interfaces/person.interface';
 import { debug } from 'debug';
-import { GameInterface } from '../interfaces/game.interface';
-import { EdgeInterface } from '../interfaces/edge.interface';
+import { IGraphServiceServer } from '../protos/graph_grpc_pb';
+import {
+    AddEdgeRequest,
+    AddEdgeResponse,
+    AddGameNodeRequest,
+    AddGameNodeResponse,
+    AddPersonNodeRequest,
+    AddPersonNodeResponse,
+    RemoveEdgeRequest,
+    RemoveEdgeResponse,
+    UpdateUsersRequest,
+    GetEdgesRequest,
+    GetEdgesResponse
+} from '../protos/graph_pb';
+import { GraphService } from './../services/graph.service';
 import { ConnectionService } from '../services/connection.service';
 
 export class Server implements IGraphServiceServer {
-    private graph: Graph;
     private connectionService: ConnectionService;
+    private graphService: GraphService;
     constructor() {
-        this.graph = new Graph();
         this.connectionService = new ConnectionService();
+        this.graphService = new GraphService();
     }
 
     public addPersonNode(call: grpc.ServerUnaryCall<AddPersonNodeRequest>, callback: grpc.sendUnaryData<AddPersonNodeResponse>) {
-        const firstName = call.request.getPerson().getFirstName();
-        const lastName = call.request.getPerson().getLastName();
-        const person: PersonInterface = {
-            firstName,
-            lastName
-        };
-        this.graph.addPersonNode(person);
+        const person = this.graphService.addPersonNode(call.request);
         const response = new AddPersonNodeResponse();
         debug.log('New Person Node added: ', person);
-        response.setResult('Success, person node added to graph');
+        response.setPersonId(person.id);
         callback(null, response);
     }
 
     public addGameNode(call: grpc.ServerUnaryCall<AddGameNodeRequest>, callback: grpc.sendUnaryData<AddGameNodeResponse>) {
-        const title = call.request.getGame().getTitle();
-        const description = call.request.getGame().getDescription();
-        const game: GameInterface = {
-            title,
-            description
-        };
-        this.graph.addGameNode(game);
+        const game = this.graphService.addGameNode(call.request)
         const response = new AddGameNodeResponse();
         debug.log('New Game Node added: ', game);
-        response.setResult('Success, game node added to graph');
+        response.setGameId(game.id);
         callback(null, response);
     }
 
     public addEdge(call: grpc.ServerUnaryCall<AddEdgeRequest>, callback: grpc.sendUnaryData<AddEdgeResponse>) {
-        const title = call.request.getEdgeInfo().getGameTitle();
-        const fullName = call.request.getEdgeInfo().getPersonFullName();
-        const edge: EdgeInterface = {
-            title,
-            fullName
-        };
+        const result = this.graphService.addEdge(call.request);
         const response = new AddEdgeResponse();
-        debug.log('New Edge added: ', edge);
-        response.setIsSucceed(this.graph.addEdge(edge));
-        this.connectionService.updateConnectedUsers(edge, false);
+        const debugMessage = result.isSuccess ? 'New Edge added: ' : 'Unable to add edge :'
+        debug.log(debugMessage, result.edgeResponse);
+        response.setEdge(result.edgeResponse)
+        this.connectionService.updateConnectedUsers(result.edgeResponse, !result.isSuccess);
         callback(null, response);
     }
 
     public removeEdge(call: grpc.ServerUnaryCall<RemoveEdgeRequest>, callback: grpc.sendUnaryData<RemoveEdgeResponse>) {
-        const title = call.request.getEdgeInfo().getGameTitle();
-        const fullName = call.request.getEdgeInfo().getPersonFullName();
-        const edge: EdgeInterface = {
-            title,
-            fullName
-        };
+        const result = this.graphService.removeEdge(call.request);
         const response = new RemoveEdgeResponse();
-        debug.log('Edge removed: ', edge);
-        response.setIsSucceed(this.graph.removeEdge(edge));
-        this.connectionService.updateConnectedUsers(edge, true);
+        const debugMessage = result.isSuccess ? 'Edge removed: ' : 'Unable to remove edge :'
+        debug.log(debugMessage, result.edge);
+        response.setIsSucceed(result.isSuccess);
+        this.connectionService.updateConnectedUsers(result.edge, result.isSuccess);
         callback(null, response);
     }
 
-    public printNodes(call: grpc.ServerUnaryCall<PrintNodesRequest>, callback: grpc.sendUnaryData<PrintNodesResponse>) {
-        const response = new PrintNodesResponse();
-        const edges = this.graph.printAllNodes();
+    public getEdges(call: grpc.ServerUnaryCall<GetEdgesRequest>, callback: grpc.sendUnaryData<GetEdgesResponse>) {
+        const response = new GetEdgesResponse();
+        const edges = this.graphService.getEdges();
         response.setEdgeList(edges);
         callback(null, response);
     }

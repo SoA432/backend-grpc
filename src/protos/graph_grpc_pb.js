@@ -70,26 +70,26 @@ function deserialize_graph_AddPersonNodeResponse(buffer_arg) {
   return protos_graph_pb.AddPersonNodeResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_graph_PrintNodesRequest(arg) {
-  if (!(arg instanceof protos_graph_pb.PrintNodesRequest)) {
-    throw new Error('Expected argument of type graph.PrintNodesRequest');
+function serialize_graph_GetEdgesRequest(arg) {
+  if (!(arg instanceof protos_graph_pb.GetEdgesRequest)) {
+    throw new Error('Expected argument of type graph.GetEdgesRequest');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_graph_PrintNodesRequest(buffer_arg) {
-  return protos_graph_pb.PrintNodesRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_graph_GetEdgesRequest(buffer_arg) {
+  return protos_graph_pb.GetEdgesRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_graph_PrintNodesResponse(arg) {
-  if (!(arg instanceof protos_graph_pb.PrintNodesResponse)) {
-    throw new Error('Expected argument of type graph.PrintNodesResponse');
+function serialize_graph_GetEdgesResponse(arg) {
+  if (!(arg instanceof protos_graph_pb.GetEdgesResponse)) {
+    throw new Error('Expected argument of type graph.GetEdgesResponse');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_graph_PrintNodesResponse(buffer_arg) {
-  return protos_graph_pb.PrintNodesResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_graph_GetEdgesResponse(buffer_arg) {
+  return protos_graph_pb.GetEdgesResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_graph_RemoveEdgeRequest(arg) {
@@ -182,16 +182,16 @@ var GraphServiceService = exports.GraphServiceService = {
     responseSerialize: serialize_graph_RemoveEdgeResponse,
     responseDeserialize: deserialize_graph_RemoveEdgeResponse,
   },
-  printNodes: {
-    path: '/graph.GraphService/PrintNodes',
+  getEdges: {
+    path: '/graph.GraphService/GetEdges',
     requestStream: false,
     responseStream: false,
-    requestType: protos_graph_pb.PrintNodesRequest,
-    responseType: protos_graph_pb.PrintNodesResponse,
-    requestSerialize: serialize_graph_PrintNodesRequest,
-    requestDeserialize: deserialize_graph_PrintNodesRequest,
-    responseSerialize: serialize_graph_PrintNodesResponse,
-    responseDeserialize: deserialize_graph_PrintNodesResponse,
+    requestType: protos_graph_pb.GetEdgesRequest,
+    responseType: protos_graph_pb.GetEdgesResponse,
+    requestSerialize: serialize_graph_GetEdgesRequest,
+    requestDeserialize: deserialize_graph_GetEdgesRequest,
+    responseSerialize: serialize_graph_GetEdgesResponse,
+    responseDeserialize: deserialize_graph_GetEdgesResponse,
   },
   updateUsers: {
     path: '/graph.GraphService/UpdateUsers',

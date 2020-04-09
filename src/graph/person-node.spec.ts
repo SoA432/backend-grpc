@@ -1,15 +1,17 @@
 import { PersonNode } from './person-node';
 import { GameInterface } from '../interfaces/game.interface';
 
-describe('Game node creation', () => {
+describe('Game node', () => {
     let person: PersonNode;
     const firstName = 'Mark';
     const lastName = 'America';
     const oriGame: GameInterface = {
+        id: '1',
         title: 'Ori',
         description: 'Beautiful Game!'
     };
     const gtaGame: GameInterface = {
+        id: '2',
         title: 'GTA V',
         description: 'Bestseller'
     };
@@ -26,13 +28,13 @@ describe('Game node creation', () => {
     it('should add game to person instance', () => {
         person.addGame(oriGame);
         person.addGame(gtaGame);
-        expect(person.games.length).toBe(2);
+        expect(person.games.size).toBe(2);
     });
 
     it('should remove game from person instance', () => {
         person.addGame(oriGame);
         person.addGame(gtaGame);
         person.removeGame(oriGame);
-        expect(person.games.length).toBe(1);
+        expect(person.games.size).toBe(1);
     });
 });

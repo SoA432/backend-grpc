@@ -20,9 +20,9 @@ goog.exportSymbol('proto.graph.AddPersonNodeResponse', null, global);
 goog.exportSymbol('proto.graph.Edge', null, global);
 goog.exportSymbol('proto.graph.EdgeInfo', null, global);
 goog.exportSymbol('proto.graph.Game', null, global);
+goog.exportSymbol('proto.graph.GetEdgesRequest', null, global);
+goog.exportSymbol('proto.graph.GetEdgesResponse', null, global);
 goog.exportSymbol('proto.graph.Person', null, global);
-goog.exportSymbol('proto.graph.PrintNodesRequest', null, global);
-goog.exportSymbol('proto.graph.PrintNodesResponse', null, global);
 goog.exportSymbol('proto.graph.RemoveEdgeRequest', null, global);
 goog.exportSymbol('proto.graph.RemoveEdgeResponse', null, global);
 goog.exportSymbol('proto.graph.UpdateUsersRequest', null, global);
@@ -74,8 +74,9 @@ proto.graph.Person.prototype.toObject = function(opt_includeInstance) {
  */
 proto.graph.Person.toObject = function(includeInstance, msg) {
   var f, obj = {
-    firstName: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    lastName: jspb.Message.getFieldWithDefault(msg, 2, "")
+    id: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    firstName: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    lastName: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
 
   if (includeInstance) {
@@ -114,9 +115,13 @@ proto.graph.Person.deserializeBinaryFromReader = function(msg, reader) {
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.setFirstName(value);
+      msg.setId(value);
       break;
     case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setFirstName(value);
+      break;
+    case 3:
       var value = /** @type {string} */ (reader.readString());
       msg.setLastName(value);
       break;
@@ -149,17 +154,24 @@ proto.graph.Person.prototype.serializeBinary = function() {
  */
 proto.graph.Person.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getFirstName();
+  f = message.getId();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = message.getLastName();
+  f = message.getFirstName();
   if (f.length > 0) {
     writer.writeString(
       2,
+      f
+    );
+  }
+  f = message.getLastName();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
       f
     );
   }
@@ -167,32 +179,47 @@ proto.graph.Person.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional string first_name = 1;
+ * optional string id = 1;
  * @return {string}
  */
-proto.graph.Person.prototype.getFirstName = function() {
+proto.graph.Person.prototype.getId = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /** @param {string} value */
-proto.graph.Person.prototype.setFirstName = function(value) {
+proto.graph.Person.prototype.setId = function(value) {
   jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
 /**
- * optional string last_name = 2;
+ * optional string first_name = 2;
  * @return {string}
  */
-proto.graph.Person.prototype.getLastName = function() {
+proto.graph.Person.prototype.getFirstName = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /** @param {string} value */
-proto.graph.Person.prototype.setLastName = function(value) {
+proto.graph.Person.prototype.setFirstName = function(value) {
   jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string last_name = 3;
+ * @return {string}
+ */
+proto.graph.Person.prototype.getLastName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/** @param {string} value */
+proto.graph.Person.prototype.setLastName = function(value) {
+  jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
@@ -243,8 +270,9 @@ proto.graph.Game.prototype.toObject = function(opt_includeInstance) {
  */
 proto.graph.Game.toObject = function(includeInstance, msg) {
   var f, obj = {
-    title: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    description: jspb.Message.getFieldWithDefault(msg, 2, "")
+    id: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    title: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    description: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
 
   if (includeInstance) {
@@ -283,9 +311,13 @@ proto.graph.Game.deserializeBinaryFromReader = function(msg, reader) {
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.setTitle(value);
+      msg.setId(value);
       break;
     case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTitle(value);
+      break;
+    case 3:
       var value = /** @type {string} */ (reader.readString());
       msg.setDescription(value);
       break;
@@ -318,17 +350,24 @@ proto.graph.Game.prototype.serializeBinary = function() {
  */
 proto.graph.Game.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getTitle();
+  f = message.getId();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = message.getDescription();
+  f = message.getTitle();
   if (f.length > 0) {
     writer.writeString(
       2,
+      f
+    );
+  }
+  f = message.getDescription();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
       f
     );
   }
@@ -336,32 +375,47 @@ proto.graph.Game.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional string title = 1;
+ * optional string id = 1;
  * @return {string}
  */
-proto.graph.Game.prototype.getTitle = function() {
+proto.graph.Game.prototype.getId = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /** @param {string} value */
-proto.graph.Game.prototype.setTitle = function(value) {
+proto.graph.Game.prototype.setId = function(value) {
   jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
 /**
- * optional string description = 2;
+ * optional string title = 2;
  * @return {string}
  */
-proto.graph.Game.prototype.getDescription = function() {
+proto.graph.Game.prototype.getTitle = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /** @param {string} value */
-proto.graph.Game.prototype.setDescription = function(value) {
+proto.graph.Game.prototype.setTitle = function(value) {
   jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string description = 3;
+ * @return {string}
+ */
+proto.graph.Game.prototype.getDescription = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/** @param {string} value */
+proto.graph.Game.prototype.setDescription = function(value) {
+  jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
@@ -412,8 +466,11 @@ proto.graph.Edge.prototype.toObject = function(opt_includeInstance) {
  */
 proto.graph.Edge.toObject = function(includeInstance, msg) {
   var f, obj = {
-    personFullName: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    gameTitle: jspb.Message.getFieldWithDefault(msg, 2, "")
+    id: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    personFullName: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    gameTitle: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    personId: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    gameId: jspb.Message.getFieldWithDefault(msg, 5, "")
   };
 
   if (includeInstance) {
@@ -452,11 +509,23 @@ proto.graph.Edge.deserializeBinaryFromReader = function(msg, reader) {
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.setPersonFullName(value);
+      msg.setId(value);
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
+      msg.setPersonFullName(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
       msg.setGameTitle(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPersonId(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setGameId(value);
       break;
     default:
       reader.skipField();
@@ -487,17 +556,38 @@ proto.graph.Edge.prototype.serializeBinary = function() {
  */
 proto.graph.Edge.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getPersonFullName();
+  f = message.getId();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = message.getGameTitle();
+  f = message.getPersonFullName();
   if (f.length > 0) {
     writer.writeString(
       2,
+      f
+    );
+  }
+  f = message.getGameTitle();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getPersonId();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getGameId();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
       f
     );
   }
@@ -505,32 +595,77 @@ proto.graph.Edge.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional string person_full_name = 1;
+ * optional string id = 1;
  * @return {string}
  */
-proto.graph.Edge.prototype.getPersonFullName = function() {
+proto.graph.Edge.prototype.getId = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /** @param {string} value */
-proto.graph.Edge.prototype.setPersonFullName = function(value) {
+proto.graph.Edge.prototype.setId = function(value) {
   jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
 /**
- * optional string game_title = 2;
+ * optional string person_full_name = 2;
  * @return {string}
  */
-proto.graph.Edge.prototype.getGameTitle = function() {
+proto.graph.Edge.prototype.getPersonFullName = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /** @param {string} value */
-proto.graph.Edge.prototype.setGameTitle = function(value) {
+proto.graph.Edge.prototype.setPersonFullName = function(value) {
   jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string game_title = 3;
+ * @return {string}
+ */
+proto.graph.Edge.prototype.getGameTitle = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/** @param {string} value */
+proto.graph.Edge.prototype.setGameTitle = function(value) {
+  jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string person_id = 4;
+ * @return {string}
+ */
+proto.graph.Edge.prototype.getPersonId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/** @param {string} value */
+proto.graph.Edge.prototype.setPersonId = function(value) {
+  jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string game_id = 5;
+ * @return {string}
+ */
+proto.graph.Edge.prototype.getGameId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/** @param {string} value */
+proto.graph.Edge.prototype.setGameId = function(value) {
+  jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
@@ -740,7 +875,7 @@ proto.graph.AddPersonNodeResponse.prototype.toObject = function(opt_includeInsta
  */
 proto.graph.AddPersonNodeResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    result: jspb.Message.getFieldWithDefault(msg, 1, "")
+    personId: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -779,7 +914,7 @@ proto.graph.AddPersonNodeResponse.deserializeBinaryFromReader = function(msg, re
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.setResult(value);
+      msg.setPersonId(value);
       break;
     default:
       reader.skipField();
@@ -810,7 +945,7 @@ proto.graph.AddPersonNodeResponse.prototype.serializeBinary = function() {
  */
 proto.graph.AddPersonNodeResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getResult();
+  f = message.getPersonId();
   if (f.length > 0) {
     writer.writeString(
       1,
@@ -821,16 +956,16 @@ proto.graph.AddPersonNodeResponse.serializeBinaryToWriter = function(message, wr
 
 
 /**
- * optional string result = 1;
+ * optional string person_id = 1;
  * @return {string}
  */
-proto.graph.AddPersonNodeResponse.prototype.getResult = function() {
+proto.graph.AddPersonNodeResponse.prototype.getPersonId = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /** @param {string} value */
-proto.graph.AddPersonNodeResponse.prototype.setResult = function(value) {
+proto.graph.AddPersonNodeResponse.prototype.setPersonId = function(value) {
   jspb.Message.setProto3StringField(this, 1, value);
 };
 
@@ -1041,7 +1176,7 @@ proto.graph.AddGameNodeResponse.prototype.toObject = function(opt_includeInstanc
  */
 proto.graph.AddGameNodeResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    result: jspb.Message.getFieldWithDefault(msg, 1, "")
+    gameId: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -1080,7 +1215,7 @@ proto.graph.AddGameNodeResponse.deserializeBinaryFromReader = function(msg, read
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.setResult(value);
+      msg.setGameId(value);
       break;
     default:
       reader.skipField();
@@ -1111,7 +1246,7 @@ proto.graph.AddGameNodeResponse.prototype.serializeBinary = function() {
  */
 proto.graph.AddGameNodeResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getResult();
+  f = message.getGameId();
   if (f.length > 0) {
     writer.writeString(
       1,
@@ -1122,16 +1257,16 @@ proto.graph.AddGameNodeResponse.serializeBinaryToWriter = function(message, writ
 
 
 /**
- * optional string result = 1;
+ * optional string game_id = 1;
  * @return {string}
  */
-proto.graph.AddGameNodeResponse.prototype.getResult = function() {
+proto.graph.AddGameNodeResponse.prototype.getGameId = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /** @param {string} value */
-proto.graph.AddGameNodeResponse.prototype.setResult = function(value) {
+proto.graph.AddGameNodeResponse.prototype.setGameId = function(value) {
   jspb.Message.setProto3StringField(this, 1, value);
 };
 
@@ -1183,7 +1318,7 @@ proto.graph.AddEdgeRequest.prototype.toObject = function(opt_includeInstance) {
  */
 proto.graph.AddEdgeRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    edgeInfo: (f = msg.getEdgeInfo()) && proto.graph.Edge.toObject(includeInstance, f)
+    edge: (f = msg.getEdge()) && proto.graph.Edge.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -1223,7 +1358,7 @@ proto.graph.AddEdgeRequest.deserializeBinaryFromReader = function(msg, reader) {
     case 1:
       var value = new proto.graph.Edge;
       reader.readMessage(value,proto.graph.Edge.deserializeBinaryFromReader);
-      msg.setEdgeInfo(value);
+      msg.setEdge(value);
       break;
     default:
       reader.skipField();
@@ -1254,7 +1389,7 @@ proto.graph.AddEdgeRequest.prototype.serializeBinary = function() {
  */
 proto.graph.AddEdgeRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getEdgeInfo();
+  f = message.getEdge();
   if (f != null) {
     writer.writeMessage(
       1,
@@ -1266,23 +1401,23 @@ proto.graph.AddEdgeRequest.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional Edge edge_info = 1;
+ * optional Edge edge = 1;
  * @return {?proto.graph.Edge}
  */
-proto.graph.AddEdgeRequest.prototype.getEdgeInfo = function() {
+proto.graph.AddEdgeRequest.prototype.getEdge = function() {
   return /** @type{?proto.graph.Edge} */ (
     jspb.Message.getWrapperField(this, proto.graph.Edge, 1));
 };
 
 
 /** @param {?proto.graph.Edge|undefined} value */
-proto.graph.AddEdgeRequest.prototype.setEdgeInfo = function(value) {
+proto.graph.AddEdgeRequest.prototype.setEdge = function(value) {
   jspb.Message.setWrapperField(this, 1, value);
 };
 
 
-proto.graph.AddEdgeRequest.prototype.clearEdgeInfo = function() {
-  this.setEdgeInfo(undefined);
+proto.graph.AddEdgeRequest.prototype.clearEdge = function() {
+  this.setEdge(undefined);
 };
 
 
@@ -1290,7 +1425,7 @@ proto.graph.AddEdgeRequest.prototype.clearEdgeInfo = function() {
  * Returns whether this field is set.
  * @return {boolean}
  */
-proto.graph.AddEdgeRequest.prototype.hasEdgeInfo = function() {
+proto.graph.AddEdgeRequest.prototype.hasEdge = function() {
   return jspb.Message.getField(this, 1) != null;
 };
 
@@ -1342,7 +1477,7 @@ proto.graph.AddEdgeResponse.prototype.toObject = function(opt_includeInstance) {
  */
 proto.graph.AddEdgeResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    isSucceed: jspb.Message.getFieldWithDefault(msg, 1, false)
+    edge: (f = msg.getEdge()) && proto.graph.Edge.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -1380,8 +1515,9 @@ proto.graph.AddEdgeResponse.deserializeBinaryFromReader = function(msg, reader) 
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {boolean} */ (reader.readBool());
-      msg.setIsSucceed(value);
+      var value = new proto.graph.Edge;
+      reader.readMessage(value,proto.graph.Edge.deserializeBinaryFromReader);
+      msg.setEdge(value);
       break;
     default:
       reader.skipField();
@@ -1412,30 +1548,44 @@ proto.graph.AddEdgeResponse.prototype.serializeBinary = function() {
  */
 proto.graph.AddEdgeResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getIsSucceed();
-  if (f) {
-    writer.writeBool(
+  f = message.getEdge();
+  if (f != null) {
+    writer.writeMessage(
       1,
-      f
+      f,
+      proto.graph.Edge.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional bool is_succeed = 1;
- * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
- * You should avoid comparisons like {@code val === true/false} in those cases.
- * @return {boolean}
+ * optional Edge edge = 1;
+ * @return {?proto.graph.Edge}
  */
-proto.graph.AddEdgeResponse.prototype.getIsSucceed = function() {
-  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 1, false));
+proto.graph.AddEdgeResponse.prototype.getEdge = function() {
+  return /** @type{?proto.graph.Edge} */ (
+    jspb.Message.getWrapperField(this, proto.graph.Edge, 1));
 };
 
 
-/** @param {boolean} value */
-proto.graph.AddEdgeResponse.prototype.setIsSucceed = function(value) {
-  jspb.Message.setProto3BooleanField(this, 1, value);
+/** @param {?proto.graph.Edge|undefined} value */
+proto.graph.AddEdgeResponse.prototype.setEdge = function(value) {
+  jspb.Message.setWrapperField(this, 1, value);
+};
+
+
+proto.graph.AddEdgeResponse.prototype.clearEdge = function() {
+  this.setEdge(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.graph.AddEdgeResponse.prototype.hasEdge = function() {
+  return jspb.Message.getField(this, 1) != null;
 };
 
 
@@ -1486,7 +1636,7 @@ proto.graph.RemoveEdgeRequest.prototype.toObject = function(opt_includeInstance)
  */
 proto.graph.RemoveEdgeRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    edgeInfo: (f = msg.getEdgeInfo()) && proto.graph.Edge.toObject(includeInstance, f)
+    edge: (f = msg.getEdge()) && proto.graph.Edge.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -1526,7 +1676,7 @@ proto.graph.RemoveEdgeRequest.deserializeBinaryFromReader = function(msg, reader
     case 1:
       var value = new proto.graph.Edge;
       reader.readMessage(value,proto.graph.Edge.deserializeBinaryFromReader);
-      msg.setEdgeInfo(value);
+      msg.setEdge(value);
       break;
     default:
       reader.skipField();
@@ -1557,7 +1707,7 @@ proto.graph.RemoveEdgeRequest.prototype.serializeBinary = function() {
  */
 proto.graph.RemoveEdgeRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getEdgeInfo();
+  f = message.getEdge();
   if (f != null) {
     writer.writeMessage(
       1,
@@ -1569,23 +1719,23 @@ proto.graph.RemoveEdgeRequest.serializeBinaryToWriter = function(message, writer
 
 
 /**
- * optional Edge edge_info = 1;
+ * optional Edge edge = 1;
  * @return {?proto.graph.Edge}
  */
-proto.graph.RemoveEdgeRequest.prototype.getEdgeInfo = function() {
+proto.graph.RemoveEdgeRequest.prototype.getEdge = function() {
   return /** @type{?proto.graph.Edge} */ (
     jspb.Message.getWrapperField(this, proto.graph.Edge, 1));
 };
 
 
 /** @param {?proto.graph.Edge|undefined} value */
-proto.graph.RemoveEdgeRequest.prototype.setEdgeInfo = function(value) {
+proto.graph.RemoveEdgeRequest.prototype.setEdge = function(value) {
   jspb.Message.setWrapperField(this, 1, value);
 };
 
 
-proto.graph.RemoveEdgeRequest.prototype.clearEdgeInfo = function() {
-  this.setEdgeInfo(undefined);
+proto.graph.RemoveEdgeRequest.prototype.clearEdge = function() {
+  this.setEdge(undefined);
 };
 
 
@@ -1593,7 +1743,7 @@ proto.graph.RemoveEdgeRequest.prototype.clearEdgeInfo = function() {
  * Returns whether this field is set.
  * @return {boolean}
  */
-proto.graph.RemoveEdgeRequest.prototype.hasEdgeInfo = function() {
+proto.graph.RemoveEdgeRequest.prototype.hasEdge = function() {
   return jspb.Message.getField(this, 1) != null;
 };
 
@@ -1753,12 +1903,12 @@ proto.graph.RemoveEdgeResponse.prototype.setIsSucceed = function(value) {
  * @extends {jspb.Message}
  * @constructor
  */
-proto.graph.PrintNodesRequest = function(opt_data) {
+proto.graph.GetEdgesRequest = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
-goog.inherits(proto.graph.PrintNodesRequest, jspb.Message);
+goog.inherits(proto.graph.GetEdgesRequest, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
-  proto.graph.PrintNodesRequest.displayName = 'proto.graph.PrintNodesRequest';
+  proto.graph.GetEdgesRequest.displayName = 'proto.graph.GetEdgesRequest';
 }
 
 
@@ -1773,8 +1923,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
  *     for transitional soy proto support: http://goto/soy-param-migration
  * @return {!Object}
  */
-proto.graph.PrintNodesRequest.prototype.toObject = function(opt_includeInstance) {
-  return proto.graph.PrintNodesRequest.toObject(opt_includeInstance, this);
+proto.graph.GetEdgesRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.graph.GetEdgesRequest.toObject(opt_includeInstance, this);
 };
 
 
@@ -1783,11 +1933,11 @@ proto.graph.PrintNodesRequest.prototype.toObject = function(opt_includeInstance)
  * @param {boolean|undefined} includeInstance Whether to include the JSPB
  *     instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.graph.PrintNodesRequest} msg The msg instance to transform.
+ * @param {!proto.graph.GetEdgesRequest} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.graph.PrintNodesRequest.toObject = function(includeInstance, msg) {
+proto.graph.GetEdgesRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
 
   };
@@ -1803,23 +1953,23 @@ proto.graph.PrintNodesRequest.toObject = function(includeInstance, msg) {
 /**
  * Deserializes binary data (in protobuf wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.graph.PrintNodesRequest}
+ * @return {!proto.graph.GetEdgesRequest}
  */
-proto.graph.PrintNodesRequest.deserializeBinary = function(bytes) {
+proto.graph.GetEdgesRequest.deserializeBinary = function(bytes) {
   var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.graph.PrintNodesRequest;
-  return proto.graph.PrintNodesRequest.deserializeBinaryFromReader(msg, reader);
+  var msg = new proto.graph.GetEdgesRequest;
+  return proto.graph.GetEdgesRequest.deserializeBinaryFromReader(msg, reader);
 };
 
 
 /**
  * Deserializes binary data (in protobuf wire format) from the
  * given reader into the given message object.
- * @param {!proto.graph.PrintNodesRequest} msg The message object to deserialize into.
+ * @param {!proto.graph.GetEdgesRequest} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.graph.PrintNodesRequest}
+ * @return {!proto.graph.GetEdgesRequest}
  */
-proto.graph.PrintNodesRequest.deserializeBinaryFromReader = function(msg, reader) {
+proto.graph.GetEdgesRequest.deserializeBinaryFromReader = function(msg, reader) {
   while (reader.nextField()) {
     if (reader.isEndGroup()) {
       break;
@@ -1839,9 +1989,9 @@ proto.graph.PrintNodesRequest.deserializeBinaryFromReader = function(msg, reader
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
-proto.graph.PrintNodesRequest.prototype.serializeBinary = function() {
+proto.graph.GetEdgesRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  proto.graph.PrintNodesRequest.serializeBinaryToWriter(this, writer);
+  proto.graph.GetEdgesRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
@@ -1849,11 +1999,11 @@ proto.graph.PrintNodesRequest.prototype.serializeBinary = function() {
 /**
  * Serializes the given message to binary data (in protobuf wire
  * format), writing to the given BinaryWriter.
- * @param {!proto.graph.PrintNodesRequest} message
+ * @param {!proto.graph.GetEdgesRequest} message
  * @param {!jspb.BinaryWriter} writer
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.graph.PrintNodesRequest.serializeBinaryToWriter = function(message, writer) {
+proto.graph.GetEdgesRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
 };
 
@@ -1869,19 +2019,19 @@ proto.graph.PrintNodesRequest.serializeBinaryToWriter = function(message, writer
  * @extends {jspb.Message}
  * @constructor
  */
-proto.graph.PrintNodesResponse = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, proto.graph.PrintNodesResponse.repeatedFields_, null);
+proto.graph.GetEdgesResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.graph.GetEdgesResponse.repeatedFields_, null);
 };
-goog.inherits(proto.graph.PrintNodesResponse, jspb.Message);
+goog.inherits(proto.graph.GetEdgesResponse, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
-  proto.graph.PrintNodesResponse.displayName = 'proto.graph.PrintNodesResponse';
+  proto.graph.GetEdgesResponse.displayName = 'proto.graph.GetEdgesResponse';
 }
 /**
  * List of repeated fields within this message type.
  * @private {!Array<number>}
  * @const
  */
-proto.graph.PrintNodesResponse.repeatedFields_ = [1];
+proto.graph.GetEdgesResponse.repeatedFields_ = [1];
 
 
 
@@ -1896,8 +2046,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
  *     for transitional soy proto support: http://goto/soy-param-migration
  * @return {!Object}
  */
-proto.graph.PrintNodesResponse.prototype.toObject = function(opt_includeInstance) {
-  return proto.graph.PrintNodesResponse.toObject(opt_includeInstance, this);
+proto.graph.GetEdgesResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.graph.GetEdgesResponse.toObject(opt_includeInstance, this);
 };
 
 
@@ -1906,13 +2056,14 @@ proto.graph.PrintNodesResponse.prototype.toObject = function(opt_includeInstance
  * @param {boolean|undefined} includeInstance Whether to include the JSPB
  *     instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.graph.PrintNodesResponse} msg The msg instance to transform.
+ * @param {!proto.graph.GetEdgesResponse} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.graph.PrintNodesResponse.toObject = function(includeInstance, msg) {
+proto.graph.GetEdgesResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    edgeList: jspb.Message.getRepeatedField(msg, 1)
+    edgeList: jspb.Message.toObjectList(msg.getEdgeList(),
+    proto.graph.Edge.toObject, includeInstance)
   };
 
   if (includeInstance) {
@@ -1926,23 +2077,23 @@ proto.graph.PrintNodesResponse.toObject = function(includeInstance, msg) {
 /**
  * Deserializes binary data (in protobuf wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.graph.PrintNodesResponse}
+ * @return {!proto.graph.GetEdgesResponse}
  */
-proto.graph.PrintNodesResponse.deserializeBinary = function(bytes) {
+proto.graph.GetEdgesResponse.deserializeBinary = function(bytes) {
   var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.graph.PrintNodesResponse;
-  return proto.graph.PrintNodesResponse.deserializeBinaryFromReader(msg, reader);
+  var msg = new proto.graph.GetEdgesResponse;
+  return proto.graph.GetEdgesResponse.deserializeBinaryFromReader(msg, reader);
 };
 
 
 /**
  * Deserializes binary data (in protobuf wire format) from the
  * given reader into the given message object.
- * @param {!proto.graph.PrintNodesResponse} msg The message object to deserialize into.
+ * @param {!proto.graph.GetEdgesResponse} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.graph.PrintNodesResponse}
+ * @return {!proto.graph.GetEdgesResponse}
  */
-proto.graph.PrintNodesResponse.deserializeBinaryFromReader = function(msg, reader) {
+proto.graph.GetEdgesResponse.deserializeBinaryFromReader = function(msg, reader) {
   while (reader.nextField()) {
     if (reader.isEndGroup()) {
       break;
@@ -1950,7 +2101,8 @@ proto.graph.PrintNodesResponse.deserializeBinaryFromReader = function(msg, reade
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {string} */ (reader.readString());
+      var value = new proto.graph.Edge;
+      reader.readMessage(value,proto.graph.Edge.deserializeBinaryFromReader);
       msg.addEdge(value);
       break;
     default:
@@ -1966,9 +2118,9 @@ proto.graph.PrintNodesResponse.deserializeBinaryFromReader = function(msg, reade
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
-proto.graph.PrintNodesResponse.prototype.serializeBinary = function() {
+proto.graph.GetEdgesResponse.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  proto.graph.PrintNodesResponse.serializeBinaryToWriter(this, writer);
+  proto.graph.GetEdgesResponse.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
@@ -1976,47 +2128,50 @@ proto.graph.PrintNodesResponse.prototype.serializeBinary = function() {
 /**
  * Serializes the given message to binary data (in protobuf wire
  * format), writing to the given BinaryWriter.
- * @param {!proto.graph.PrintNodesResponse} message
+ * @param {!proto.graph.GetEdgesResponse} message
  * @param {!jspb.BinaryWriter} writer
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.graph.PrintNodesResponse.serializeBinaryToWriter = function(message, writer) {
+proto.graph.GetEdgesResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getEdgeList();
   if (f.length > 0) {
-    writer.writeRepeatedString(
+    writer.writeRepeatedMessage(
       1,
-      f
+      f,
+      proto.graph.Edge.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * repeated string edge = 1;
- * @return {!Array<string>}
+ * repeated Edge edge = 1;
+ * @return {!Array<!proto.graph.Edge>}
  */
-proto.graph.PrintNodesResponse.prototype.getEdgeList = function() {
-  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 1));
+proto.graph.GetEdgesResponse.prototype.getEdgeList = function() {
+  return /** @type{!Array<!proto.graph.Edge>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.graph.Edge, 1));
 };
 
 
-/** @param {!Array<string>} value */
-proto.graph.PrintNodesResponse.prototype.setEdgeList = function(value) {
-  jspb.Message.setField(this, 1, value || []);
+/** @param {!Array<!proto.graph.Edge>} value */
+proto.graph.GetEdgesResponse.prototype.setEdgeList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 1, value);
 };
 
 
 /**
- * @param {string} value
+ * @param {!proto.graph.Edge=} opt_value
  * @param {number=} opt_index
+ * @return {!proto.graph.Edge}
  */
-proto.graph.PrintNodesResponse.prototype.addEdge = function(value, opt_index) {
-  jspb.Message.addToRepeatedField(this, 1, value, opt_index);
+proto.graph.GetEdgesResponse.prototype.addEdge = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.graph.Edge, opt_index);
 };
 
 
-proto.graph.PrintNodesResponse.prototype.clearEdgeList = function() {
+proto.graph.GetEdgesResponse.prototype.clearEdgeList = function() {
   this.setEdgeList([]);
 };
 
@@ -2068,7 +2223,7 @@ proto.graph.EdgeInfo.prototype.toObject = function(opt_includeInstance) {
  */
 proto.graph.EdgeInfo.toObject = function(includeInstance, msg) {
   var f, obj = {
-    edge: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    edge: (f = msg.getEdge()) && proto.graph.Edge.toObject(includeInstance, f),
     isRemoved: jspb.Message.getFieldWithDefault(msg, 2, false)
   };
 
@@ -2107,7 +2262,8 @@ proto.graph.EdgeInfo.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {string} */ (reader.readString());
+      var value = new proto.graph.Edge;
+      reader.readMessage(value,proto.graph.Edge.deserializeBinaryFromReader);
       msg.setEdge(value);
       break;
     case 2:
@@ -2144,10 +2300,11 @@ proto.graph.EdgeInfo.prototype.serializeBinary = function() {
 proto.graph.EdgeInfo.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getEdge();
-  if (f.length > 0) {
-    writer.writeString(
+  if (f != null) {
+    writer.writeMessage(
       1,
-      f
+      f,
+      proto.graph.Edge.serializeBinaryToWriter
     );
   }
   f = message.getIsRemoved();
@@ -2161,17 +2318,32 @@ proto.graph.EdgeInfo.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional string edge = 1;
- * @return {string}
+ * optional Edge edge = 1;
+ * @return {?proto.graph.Edge}
  */
 proto.graph.EdgeInfo.prototype.getEdge = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+  return /** @type{?proto.graph.Edge} */ (
+    jspb.Message.getWrapperField(this, proto.graph.Edge, 1));
 };
 
 
-/** @param {string} value */
+/** @param {?proto.graph.Edge|undefined} value */
 proto.graph.EdgeInfo.prototype.setEdge = function(value) {
-  jspb.Message.setProto3StringField(this, 1, value);
+  jspb.Message.setWrapperField(this, 1, value);
+};
+
+
+proto.graph.EdgeInfo.prototype.clearEdge = function() {
+  this.setEdge(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.graph.EdgeInfo.prototype.hasEdge = function() {
+  return jspb.Message.getField(this, 1) != null;
 };
 
 

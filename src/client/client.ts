@@ -1,10 +1,26 @@
-import { PersonInterface } from '../interfaces/person.interface';
 import grpc from 'grpc';
-import { EdgeInfo, UpdateUsersRequest, PrintNodesResponse, AddEdgeRequest, AddEdgeResponse, AddGameNodeRequest, AddGameNodeResponse, AddPersonNodeRequest, AddPersonNodeResponse, Edge, Game, Person, PrintNodesRequest, RemoveEdgeRequest, RemoveEdgeResponse } from '../protos/graph_pb';
-import { GraphServiceClient } from '../protos/graph_grpc_pb';
-import { GameInterface } from '../interfaces/game.interface';
-import { getRandomInt } from '../utils/random-number-generator'
 import { debug } from 'debug';
+import { GraphServiceClient } from '../protos/graph_grpc_pb';
+import {
+    EdgeInfo,
+    Edge,
+    Game,
+    Person,
+    UpdateUsersRequest,
+    AddEdgeRequest,
+    AddEdgeResponse,
+    AddGameNodeRequest,
+    AddGameNodeResponse,
+    AddPersonNodeRequest,
+    AddPersonNodeResponse,
+    RemoveEdgeRequest,
+    RemoveEdgeResponse,
+    GetEdgesRequest,
+    GetEdgesResponse
+} from '../protos/graph_pb';
+import { GameInterface } from '../interfaces/game.interface';
+import { PersonInterface } from '../interfaces/person.interface';
+import { getRandomInt } from '../utils/random-number-generator'
 
 debug('client');
 
@@ -24,13 +40,15 @@ const persons: PersonInterface[] = [
     {firstName: 'Ihor', lastName: 'Ihorov'}
 ];
 
+const edges: Edge[] = [];
+
 const client = new GraphServiceClient(
     '127.0.0.1:50051',
     grpc.credentials.createInsecure()
 );
 
 const callAddPersonNode = async (index: number) => {
-    return new Promise((resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
         const request = new AddPersonNodeRequest();
         const person = new Person();
 
@@ -40,8 +58,9 @@ const callAddPersonNode = async (index: number) => {
         request.setPerson(person);
         client.addPersonNode(request, (error, response: AddPersonNodeResponse) => {
             if (!error) {
-                debug.log('AddPersonNodeResponse response:', response.getResult());
-                resolve();
+                const personId = response.getPersonId().toString();
+                debug.log('AddPersonNodeResponse response:', personId);
+                resolve(personId);
             } else {
                 debug.log('error >>>>', error);
                 reject(error);
@@ -52,7 +71,7 @@ const callAddPersonNode = async (index: number) => {
 };
 
 const callAddGameNode = async (index: number) => {
-    return new Promise((resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
         const request = new AddGameNodeRequest();
         const game = new Game();
         const randomGame = games[index];
@@ -61,8 +80,9 @@ const callAddGameNode = async (index: number) => {
         request.setGame(game);
         client.addGameNode(request, (error, response: AddGameNodeResponse) => {
             if (!error) {
-                debug.log('AddGameNodeResponse response:', response.getResult());
-                resolve();
+                const gameId = response.getGameId();
+                debug.log('AddGameNodeResponse response:', gameId);
+                resolve(gameId.toString());
             } else {
                 debug.log('error >>>>', error);
                 reject(error);
@@ -72,19 +92,21 @@ const callAddGameNode = async (index: number) => {
     })
 };
 
-const callAddEdge = async (personIndex: number, gameIndex: number) => {
+const callAddEdge = async (personIndex: number, gameIndex: number, gameId: string, currentPersonId: string) => {
     return new Promise((resolve, reject) => {
         const request = new AddEdgeRequest();
         const edge = new Edge();
         edge.setGameTitle(games[gameIndex].title);
         edge.setPersonFullName(persons[personIndex].firstName + ' ' + persons[personIndex].lastName);
-        request.setEdgeInfo(edge);
+        edge.setPersonId(currentPersonId);
+        edge.setGameId(gameId);
+        request.setEdge(edge);
         client.addEdge(request, (error, response: AddEdgeResponse) => {
             if (!error) {
-                debug.log('AddEdgeResponse response:', response.getIsSucceed());
+                edges.push(response.getEdge())
+                debug.log('callAddEdge response');
                 resolve();
             } else {
-                debug.log('error >>>>', error);
                 reject(error);
                 return;
             }
@@ -92,19 +114,15 @@ const callAddEdge = async (personIndex: number, gameIndex: number) => {
     })
 };
 
-const callRemoveEdge = async (personIndex: number, gameIndex: number) => {
+const callRemoveEdge = async (edge: Edge) => {
     return new Promise((resolve, reject) => {
         const request = new RemoveEdgeRequest();
-        const edge = new Edge();
-        edge.setGameTitle(games[gameIndex].title);
-        edge.setPersonFullName(persons[personIndex].firstName + ' ' + persons[personIndex].lastName);
-        request.setEdgeInfo(edge);
+        request.setEdge(edge);
         client.removeEdge(request, (error, response: RemoveEdgeResponse) => {
             if (!error) {
-                debug.log('RemoveEdgeResponse response:', response.getIsSucceed());
+                debug.log('callRemoveEdge response');
                 resolve();
             } else {
-                debug.log('error >>>>', error);
                 reject(error);
                 return;
             }
@@ -112,12 +130,12 @@ const callRemoveEdge = async (personIndex: number, gameIndex: number) => {
     })
 };
 
-const callPrintNodes = () => {
+const callGetEdges = () => {
     return new Promise((resolve, reject) => {
-        const request = new PrintNodesRequest();
-        client.printNodes(request, (error, response: PrintNodesResponse) => {
+        const request = new GetEdgesRequest();
+        client.getEdges(request, (error, response: GetEdgesResponse) => {
             if (!error) {
-                debug.log('PrintNodes response:', response.getEdgeList());
+                debug.log('GetEdges response:', response.getEdgeList());
                 resolve();
             } else {
                 debug.log('error >>>>', error);
@@ -143,24 +161,29 @@ const callUpdateUsers = () => {
 };
 
 async function main() {
-    const randomPersonIndex = getRandomInt(0, 4);
-    const randomGameIndex = getRandomInt(0, 2);
-    await callPrintNodes();
-    await callUpdateUsers();
-    setTimeout(async () => {
-        await callAddPersonNode(randomPersonIndex);
-        await callAddGameNode(randomGameIndex);
-        await callAddGameNode(randomGameIndex + 1);
-        await callAddGameNode(randomGameIndex + 2);
-        await callAddEdge(randomPersonIndex, randomGameIndex);
-        await callAddEdge(randomPersonIndex, randomGameIndex + 1);
-        await callAddEdge(randomPersonIndex, randomGameIndex + 2);
-    }, 3000)
+    try {
+        const randomPersonIndex = getRandomInt(0, 4);
+        const randomGameIndex = getRandomInt(0, 2);
+        await callGetEdges();
+        await callUpdateUsers();
+        const currentPersonId: string = await callAddPersonNode(randomPersonIndex);
 
-    // remove existing edge after 10 seconds
-    setTimeout(async () => {
-        await callRemoveEdge(randomPersonIndex, randomGameIndex + 1)
-    }, 10000)
+        let counter = 0;
+        const intervalId = setInterval(async () => {
+            const gameId: string = await callAddGameNode(randomGameIndex + (counter % 3));
+            await callAddEdge(randomPersonIndex, randomGameIndex + (counter % 3), gameId, currentPersonId);
+            if (++counter >= getRandomInt(10, 50)) {
+                clearInterval(intervalId)
+            }
+        }, getRandomInt(1, 5) * 1000)
+
+        // remove existing edge after 10 seconds
+        setTimeout(async () => {
+            await callRemoveEdge(edges[getRandomInt(0, edges.length - 1)])
+        }, 10000)
+    } catch (e) {
+        debug(e)
+    }
 }
 
 main().then((_) => _);

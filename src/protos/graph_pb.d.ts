@@ -7,6 +7,9 @@
 import * as jspb from "google-protobuf";
 
 export class Person extends jspb.Message { 
+    getId(): string;
+    setId(value: string): void;
+
     getFirstName(): string;
     setFirstName(value: string): void;
 
@@ -26,12 +29,16 @@ export class Person extends jspb.Message {
 
 export namespace Person {
     export type AsObject = {
+        id: string,
         firstName: string,
         lastName: string,
     }
 }
 
 export class Game extends jspb.Message { 
+    getId(): string;
+    setId(value: string): void;
+
     getTitle(): string;
     setTitle(value: string): void;
 
@@ -51,17 +58,27 @@ export class Game extends jspb.Message {
 
 export namespace Game {
     export type AsObject = {
+        id: string,
         title: string,
         description: string,
     }
 }
 
 export class Edge extends jspb.Message { 
+    getId(): string;
+    setId(value: string): void;
+
     getPersonFullName(): string;
     setPersonFullName(value: string): void;
 
     getGameTitle(): string;
     setGameTitle(value: string): void;
+
+    getPersonId(): string;
+    setPersonId(value: string): void;
+
+    getGameId(): string;
+    setGameId(value: string): void;
 
 
     serializeBinary(): Uint8Array;
@@ -76,8 +93,11 @@ export class Edge extends jspb.Message {
 
 export namespace Edge {
     export type AsObject = {
+        id: string,
         personFullName: string,
         gameTitle: string,
+        personId: string,
+        gameId: string,
     }
 }
 
@@ -106,8 +126,8 @@ export namespace AddPersonNodeRequest {
 }
 
 export class AddPersonNodeResponse extends jspb.Message { 
-    getResult(): string;
-    setResult(value: string): void;
+    getPersonId(): string;
+    setPersonId(value: string): void;
 
 
     serializeBinary(): Uint8Array;
@@ -122,7 +142,7 @@ export class AddPersonNodeResponse extends jspb.Message {
 
 export namespace AddPersonNodeResponse {
     export type AsObject = {
-        result: string,
+        personId: string,
     }
 }
 
@@ -151,8 +171,8 @@ export namespace AddGameNodeRequest {
 }
 
 export class AddGameNodeResponse extends jspb.Message { 
-    getResult(): string;
-    setResult(value: string): void;
+    getGameId(): string;
+    setGameId(value: string): void;
 
 
     serializeBinary(): Uint8Array;
@@ -167,16 +187,16 @@ export class AddGameNodeResponse extends jspb.Message {
 
 export namespace AddGameNodeResponse {
     export type AsObject = {
-        result: string,
+        gameId: string,
     }
 }
 
 export class AddEdgeRequest extends jspb.Message { 
 
-    hasEdgeInfo(): boolean;
-    clearEdgeInfo(): void;
-    getEdgeInfo(): Edge | undefined;
-    setEdgeInfo(value?: Edge): void;
+    hasEdge(): boolean;
+    clearEdge(): void;
+    getEdge(): Edge | undefined;
+    setEdge(value?: Edge): void;
 
 
     serializeBinary(): Uint8Array;
@@ -191,13 +211,16 @@ export class AddEdgeRequest extends jspb.Message {
 
 export namespace AddEdgeRequest {
     export type AsObject = {
-        edgeInfo?: Edge.AsObject,
+        edge?: Edge.AsObject,
     }
 }
 
 export class AddEdgeResponse extends jspb.Message { 
-    getIsSucceed(): boolean;
-    setIsSucceed(value: boolean): void;
+
+    hasEdge(): boolean;
+    clearEdge(): void;
+    getEdge(): Edge | undefined;
+    setEdge(value?: Edge): void;
 
 
     serializeBinary(): Uint8Array;
@@ -212,16 +235,16 @@ export class AddEdgeResponse extends jspb.Message {
 
 export namespace AddEdgeResponse {
     export type AsObject = {
-        isSucceed: boolean,
+        edge?: Edge.AsObject,
     }
 }
 
 export class RemoveEdgeRequest extends jspb.Message { 
 
-    hasEdgeInfo(): boolean;
-    clearEdgeInfo(): void;
-    getEdgeInfo(): Edge | undefined;
-    setEdgeInfo(value?: Edge): void;
+    hasEdge(): boolean;
+    clearEdge(): void;
+    getEdge(): Edge | undefined;
+    setEdge(value?: Edge): void;
 
 
     serializeBinary(): Uint8Array;
@@ -236,7 +259,7 @@ export class RemoveEdgeRequest extends jspb.Message {
 
 export namespace RemoveEdgeRequest {
     export type AsObject = {
-        edgeInfo?: Edge.AsObject,
+        edge?: Edge.AsObject,
     }
 }
 
@@ -261,49 +284,52 @@ export namespace RemoveEdgeResponse {
     }
 }
 
-export class PrintNodesRequest extends jspb.Message { 
+export class GetEdgesRequest extends jspb.Message { 
 
     serializeBinary(): Uint8Array;
-    toObject(includeInstance?: boolean): PrintNodesRequest.AsObject;
-    static toObject(includeInstance: boolean, msg: PrintNodesRequest): PrintNodesRequest.AsObject;
+    toObject(includeInstance?: boolean): GetEdgesRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: GetEdgesRequest): GetEdgesRequest.AsObject;
     static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
     static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-    static serializeBinaryToWriter(message: PrintNodesRequest, writer: jspb.BinaryWriter): void;
-    static deserializeBinary(bytes: Uint8Array): PrintNodesRequest;
-    static deserializeBinaryFromReader(message: PrintNodesRequest, reader: jspb.BinaryReader): PrintNodesRequest;
+    static serializeBinaryToWriter(message: GetEdgesRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): GetEdgesRequest;
+    static deserializeBinaryFromReader(message: GetEdgesRequest, reader: jspb.BinaryReader): GetEdgesRequest;
 }
 
-export namespace PrintNodesRequest {
+export namespace GetEdgesRequest {
     export type AsObject = {
     }
 }
 
-export class PrintNodesResponse extends jspb.Message { 
+export class GetEdgesResponse extends jspb.Message { 
     clearEdgeList(): void;
-    getEdgeList(): Array<string>;
-    setEdgeList(value: Array<string>): void;
-    addEdge(value: string, index?: number): string;
+    getEdgeList(): Array<Edge>;
+    setEdgeList(value: Array<Edge>): void;
+    addEdge(value?: Edge, index?: number): Edge;
 
 
     serializeBinary(): Uint8Array;
-    toObject(includeInstance?: boolean): PrintNodesResponse.AsObject;
-    static toObject(includeInstance: boolean, msg: PrintNodesResponse): PrintNodesResponse.AsObject;
+    toObject(includeInstance?: boolean): GetEdgesResponse.AsObject;
+    static toObject(includeInstance: boolean, msg: GetEdgesResponse): GetEdgesResponse.AsObject;
     static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
     static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-    static serializeBinaryToWriter(message: PrintNodesResponse, writer: jspb.BinaryWriter): void;
-    static deserializeBinary(bytes: Uint8Array): PrintNodesResponse;
-    static deserializeBinaryFromReader(message: PrintNodesResponse, reader: jspb.BinaryReader): PrintNodesResponse;
+    static serializeBinaryToWriter(message: GetEdgesResponse, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): GetEdgesResponse;
+    static deserializeBinaryFromReader(message: GetEdgesResponse, reader: jspb.BinaryReader): GetEdgesResponse;
 }
 
-export namespace PrintNodesResponse {
+export namespace GetEdgesResponse {
     export type AsObject = {
-        edgeList: Array<string>,
+        edgeList: Array<Edge.AsObject>,
     }
 }
 
 export class EdgeInfo extends jspb.Message { 
-    getEdge(): string;
-    setEdge(value: string): void;
+
+    hasEdge(): boolean;
+    clearEdge(): void;
+    getEdge(): Edge | undefined;
+    setEdge(value?: Edge): void;
 
     getIsRemoved(): boolean;
     setIsRemoved(value: boolean): void;
@@ -321,7 +347,7 @@ export class EdgeInfo extends jspb.Message {
 
 export namespace EdgeInfo {
     export type AsObject = {
-        edge: string,
+        edge?: Edge.AsObject,
         isRemoved: boolean,
     }
 }

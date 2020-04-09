@@ -8,23 +8,28 @@ service GraphService {
     rpc AddGameNode (AddGameNodeRequest) returns (AddGameNodeResponse);
     rpc AddEdge (AddEdgeRequest) returns (AddEdgeResponse);
     rpc RemoveEdge (RemoveEdgeRequest) returns (RemoveEdgeResponse);
-    rpc PrintNodes (PrintNodesRequest) returns (PrintNodesResponse);
+    rpc GetEdges (GetEdgesRequest) returns (GetEdgesResponse);
     rpc UpdateUsers (UpdateUsersRequest) returns (stream UpdateUsersResponse);
 }
 
 message Person {
-    string first_name = 1;
-    string last_name = 2;
+    string id = 1;
+    string first_name = 2;
+    string last_name = 3;
 }
 
 message Game {
-    string title = 1;
-    string description = 2;
+    string id = 1;
+    string title = 2;
+    string description = 3;
 }
 
 message Edge {
-    string person_full_name = 1;
-    string game_title = 2;
+    string id = 1;
+    string person_full_name = 2;
+    string game_title = 3;
+    string person_id = 4;
+    string game_id = 5;
 }
 
 message AddPersonNodeRequest {
@@ -32,7 +37,7 @@ message AddPersonNodeRequest {
 }
 
 message AddPersonNodeResponse {
-    string result = 1;
+    string person_id = 1;
 }
 
 message AddGameNodeRequest {
@@ -40,33 +45,33 @@ message AddGameNodeRequest {
 }
 
 message AddGameNodeResponse {
-    string result = 1;
+    string game_id = 1;
 }
 
 message AddEdgeRequest {
-    Edge edge_info = 1;
+    Edge edge = 1;
 }
 
 message AddEdgeResponse {
-    bool is_succeed = 1;
+    Edge edge = 1;
 }
 
 message RemoveEdgeRequest {
-    Edge edge_info = 1;
+    Edge edge = 1;
 }
 
 message RemoveEdgeResponse {
     bool is_succeed = 1;
 }
 
-message PrintNodesRequest {}
+message GetEdgesRequest {}
 
-message PrintNodesResponse {
-    repeated string edge = 1;
+message GetEdgesResponse {
+    repeated Edge edge = 1;
 }
 
 message EdgeInfo {
-    string edge = 1;
+    Edge edge = 1;
     bool is_removed = 2;
 }
 

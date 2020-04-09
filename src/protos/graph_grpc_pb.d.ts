@@ -12,7 +12,7 @@ interface IGraphServiceService extends grpc.ServiceDefinition<grpc.UntypedServic
     addGameNode: IGraphServiceService_IAddGameNode;
     addEdge: IGraphServiceService_IAddEdge;
     removeEdge: IGraphServiceService_IRemoveEdge;
-    printNodes: IGraphServiceService_IPrintNodes;
+    getEdges: IGraphServiceService_IGetEdges;
     updateUsers: IGraphServiceService_IUpdateUsers;
 }
 
@@ -52,14 +52,14 @@ interface IGraphServiceService_IRemoveEdge extends grpc.MethodDefinition<protos_
     responseSerialize: grpc.serialize<protos_graph_pb.RemoveEdgeResponse>;
     responseDeserialize: grpc.deserialize<protos_graph_pb.RemoveEdgeResponse>;
 }
-interface IGraphServiceService_IPrintNodes extends grpc.MethodDefinition<protos_graph_pb.PrintNodesRequest, protos_graph_pb.PrintNodesResponse> {
-    path: string; // "/graph.GraphService/PrintNodes"
+interface IGraphServiceService_IGetEdges extends grpc.MethodDefinition<protos_graph_pb.GetEdgesRequest, protos_graph_pb.GetEdgesResponse> {
+    path: string; // "/graph.GraphService/GetEdges"
     requestStream: boolean; // false
     responseStream: boolean; // false
-    requestSerialize: grpc.serialize<protos_graph_pb.PrintNodesRequest>;
-    requestDeserialize: grpc.deserialize<protos_graph_pb.PrintNodesRequest>;
-    responseSerialize: grpc.serialize<protos_graph_pb.PrintNodesResponse>;
-    responseDeserialize: grpc.deserialize<protos_graph_pb.PrintNodesResponse>;
+    requestSerialize: grpc.serialize<protos_graph_pb.GetEdgesRequest>;
+    requestDeserialize: grpc.deserialize<protos_graph_pb.GetEdgesRequest>;
+    responseSerialize: grpc.serialize<protos_graph_pb.GetEdgesResponse>;
+    responseDeserialize: grpc.deserialize<protos_graph_pb.GetEdgesResponse>;
 }
 interface IGraphServiceService_IUpdateUsers extends grpc.MethodDefinition<protos_graph_pb.UpdateUsersRequest, protos_graph_pb.UpdateUsersResponse> {
     path: string; // "/graph.GraphService/UpdateUsers"
@@ -78,7 +78,7 @@ export interface IGraphServiceServer {
     addGameNode: grpc.handleUnaryCall<protos_graph_pb.AddGameNodeRequest, protos_graph_pb.AddGameNodeResponse>;
     addEdge: grpc.handleUnaryCall<protos_graph_pb.AddEdgeRequest, protos_graph_pb.AddEdgeResponse>;
     removeEdge: grpc.handleUnaryCall<protos_graph_pb.RemoveEdgeRequest, protos_graph_pb.RemoveEdgeResponse>;
-    printNodes: grpc.handleUnaryCall<protos_graph_pb.PrintNodesRequest, protos_graph_pb.PrintNodesResponse>;
+    getEdges: grpc.handleUnaryCall<protos_graph_pb.GetEdgesRequest, protos_graph_pb.GetEdgesResponse>;
     updateUsers: grpc.handleServerStreamingCall<protos_graph_pb.UpdateUsersRequest, protos_graph_pb.UpdateUsersResponse>;
 }
 
@@ -95,9 +95,9 @@ export interface IGraphServiceClient {
     removeEdge(request: protos_graph_pb.RemoveEdgeRequest, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.RemoveEdgeResponse) => void): grpc.ClientUnaryCall;
     removeEdge(request: protos_graph_pb.RemoveEdgeRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.RemoveEdgeResponse) => void): grpc.ClientUnaryCall;
     removeEdge(request: protos_graph_pb.RemoveEdgeRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.RemoveEdgeResponse) => void): grpc.ClientUnaryCall;
-    printNodes(request: protos_graph_pb.PrintNodesRequest, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.PrintNodesResponse) => void): grpc.ClientUnaryCall;
-    printNodes(request: protos_graph_pb.PrintNodesRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.PrintNodesResponse) => void): grpc.ClientUnaryCall;
-    printNodes(request: protos_graph_pb.PrintNodesRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.PrintNodesResponse) => void): grpc.ClientUnaryCall;
+    getEdges(request: protos_graph_pb.GetEdgesRequest, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.GetEdgesResponse) => void): grpc.ClientUnaryCall;
+    getEdges(request: protos_graph_pb.GetEdgesRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.GetEdgesResponse) => void): grpc.ClientUnaryCall;
+    getEdges(request: protos_graph_pb.GetEdgesRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.GetEdgesResponse) => void): grpc.ClientUnaryCall;
     updateUsers(request: protos_graph_pb.UpdateUsersRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<protos_graph_pb.UpdateUsersResponse>;
     updateUsers(request: protos_graph_pb.UpdateUsersRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<protos_graph_pb.UpdateUsersResponse>;
 }
@@ -116,9 +116,9 @@ export class GraphServiceClient extends grpc.Client implements IGraphServiceClie
     public removeEdge(request: protos_graph_pb.RemoveEdgeRequest, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.RemoveEdgeResponse) => void): grpc.ClientUnaryCall;
     public removeEdge(request: protos_graph_pb.RemoveEdgeRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.RemoveEdgeResponse) => void): grpc.ClientUnaryCall;
     public removeEdge(request: protos_graph_pb.RemoveEdgeRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.RemoveEdgeResponse) => void): grpc.ClientUnaryCall;
-    public printNodes(request: protos_graph_pb.PrintNodesRequest, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.PrintNodesResponse) => void): grpc.ClientUnaryCall;
-    public printNodes(request: protos_graph_pb.PrintNodesRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.PrintNodesResponse) => void): grpc.ClientUnaryCall;
-    public printNodes(request: protos_graph_pb.PrintNodesRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.PrintNodesResponse) => void): grpc.ClientUnaryCall;
+    public getEdges(request: protos_graph_pb.GetEdgesRequest, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.GetEdgesResponse) => void): grpc.ClientUnaryCall;
+    public getEdges(request: protos_graph_pb.GetEdgesRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.GetEdgesResponse) => void): grpc.ClientUnaryCall;
+    public getEdges(request: protos_graph_pb.GetEdgesRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: protos_graph_pb.GetEdgesResponse) => void): grpc.ClientUnaryCall;
     public updateUsers(request: protos_graph_pb.UpdateUsersRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<protos_graph_pb.UpdateUsersResponse>;
     public updateUsers(request: protos_graph_pb.UpdateUsersRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<protos_graph_pb.UpdateUsersResponse>;
 }

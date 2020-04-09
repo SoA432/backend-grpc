@@ -18,8 +18,9 @@ Each running client will do next job
 1) Get current edges
 2) Subscribe for edges updates
 3) Create Person Node
-4) Create 3 Game Node
-5) Add 3 Edges for Person Node - Game Node relation 
-6) After 10 seconds Client will remove one edge
+4) Create Game nodes randomly every 1-5 seconds
+5) Add Edges for 'Person - Game' nodes after each iteration
+6) After 15 seconds Client will remove one edge
 
+Client will stop send new Game\Edge requests randomly after 5-50 iterations
 All connected clients will see if any edge updates were made

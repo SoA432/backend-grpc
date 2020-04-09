@@ -1,21 +1,17 @@
 import { ConnectionService } from './connection.service';
 import grpc from "grpc";
-import { UpdateUsersRequest } from '../protos/graph_pb';
-import { EdgeInterface } from '../interfaces/edge.interface';
+import { UpdateUsersRequest, Edge } from '../protos/graph_pb';
 
 describe('Connection service', () => {
     let connectionService: ConnectionService;
-    let edge: EdgeInterface = {
-        title: 'Game',
-        fullName: 'Random Name'
-    };
+    let mockEdge = new Edge();
     let isRemoved: boolean = false;
 
     beforeEach(() => {
         connectionService = new ConnectionService();
 
         spyOn(connectionService, 'updateConnectedUsers');
-        connectionService.updateConnectedUsers(edge, isRemoved);
+        connectionService.updateConnectedUsers(mockEdge, isRemoved);
     });
 
     it('should add call to connected users array', () => {
@@ -25,6 +21,6 @@ describe('Connection service', () => {
     });
 
     it('should call without errors', () => {
-        expect(connectionService.updateConnectedUsers).toHaveBeenCalledWith(edge, isRemoved)
+        expect(connectionService.updateConnectedUsers).toHaveBeenCalledWith(mockEdge, isRemoved)
     });
 });
